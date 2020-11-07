@@ -4,7 +4,7 @@ from django.utils import timezone
 from account.models import User 
 # Create your models here.
 
-now = timezone.now()
+now = timezone.now
 
 
 class Room(models.Model):

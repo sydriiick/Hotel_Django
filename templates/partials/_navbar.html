@@ -1,0 +1,29 @@
+<nav class="navbar navbar-expand navbar-dark bg-dark">
+    <div class="container">
+        <a href="{% url 'home' %}" class="navbar-brand">Hotel</a>
+    <ul class="navbar-nav ml-auto">
+        
+        {% if request.user.is_authenticated %}
+            <li class="nav-item">
+                <a href="{% url 'account' %}" class="nav-link">Hello, {{request.user.user_fname}}</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'booking' %}" class="nav-link">My Booking</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'logout' %}" class="nav-link">Logout</a>
+            </li>
+        {% else %}
+            <li class="nav-item">
+                <a href="{% url 'booking' %}" class="nav-link">My Booking</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'login' %}" class="nav-link">Login</a>
+            </li>
+            <li class="nav-item">
+                <a href="{% url 'register' %}" class="nav-link">Register</a>
+            </li>
+        {% endif %}
+    </ul>
+    </div>
+</nav>

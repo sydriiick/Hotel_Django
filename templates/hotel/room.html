@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+  Room {{ room.room_number }}
+{% endblock %}
+
+
+{% block content %} 
+<div class="pt-4">
+    <div class="card ">
+        <div class="card-header">
+            <h3>Room {{ room.room_number }}</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <img src="{% static 'media/default.jpg'%}" width="100%" height="100%">
+                </div>
+                <div class="col-sm-6">
+                    <h5>Description: </h5><p>{{ room.room_desc}}</p>
+                </div>
+            </div>
+            <div class="d-flex pt-4">
+                <h5 class="m-2">Type: {{ room.room_type}}</h5>
+                <h5 class="m-2">Number of beds: {{ room.room_bed}}</h5>
+                <h5 class="m-2">Capacity: {{ room.room_capacity}}</h5>
+                <h5 class="m-2">Capacity: {{ room.room_capacity}}</h5>
+                
+                <h3 class="ml-auto">₱999.00</h3>
+            </div>
+        </div>
+        <div class="card-footer ">
+            <div class="row">
+                <div class="col-lg-5 ">
+                    <label>Check-in: <input class="form-control" type="date"></label> 
+                    <label>Check-out: <input class="form-control" type="date"></label> 
+                </div>
+                <div class="col-lg-1 ml-auto pt-4">
+                    <button class="btn btn-outline-secondary add-btn ml-auto">Book</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
+
+
+
+

@@ -29,7 +29,7 @@ class User(AbstractBaseUser):
     user_email      = models.EmailField(max_length=50, unique=True, verbose_name='Email address')
     user_fname      = models.CharField(max_length=50, verbose_name='First name')
     user_lname      = models.CharField(max_length=50, verbose_name='Last name')
-    user_phone      = models.CharField(max_length=20, verbose_name='Mobile number')
+    user_phone      = models.CharField(max_length=20, unique=True, verbose_name='Mobile number')
     date_joined     = models.DateTimeField(auto_now_add=True, verbose_name='Date joined')
     last_login      = models.DateTimeField(auto_now=True, verbose_name='Date Joined')
     is_admin        = models.BooleanField(default=False, verbose_name='Admin')
@@ -42,7 +42,7 @@ class User(AbstractBaseUser):
     objects = MyAccountManager()
 
     def __str__(self):
-        return f'{self.id} | {self.user_email}'
+        return self.user_email
 
     def has_perm(self, perm, obj=None):
         return self.is_admin

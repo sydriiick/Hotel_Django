@@ -1,71 +1,71 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title%}
    Home
 {% endblock %}
 
 
-{% block header %} 
-    
-        <nav class="navbar navbar-expand navbar-dark bg-dark">
-            <div class="container">
-                <a href="" class="navbar-brand">Hotel</a>
-            <ul class="navbar-nav ml-auto">
-                
-                {% if request.user.is_authenticated %}
-                    <li class="nav-item">
-                        <a href="" class="nav-link">Hello, {{request.user.user_fname}}</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="" class="nav-link">My Booking</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'logout' %}" class="nav-link">Logout</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a href="" class="nav-link">My Booking</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{% url 'login' %}" class="nav-link">Login</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/register" class="nav-link">Register</a>
-                    </li>
-                {% endif %}
-            </ul>
-            </div>
-            
-        </nav>
-{% endblock%}
-
 {% block content %} 
-    <h1 class="text-center m-4">Hotel Rooms</h1>
+<hr>
+    <div class="row">
+        
+        <div class="col-lg-6">
+            <div class="row">
+                <div class="col-lg-6">
+                    <p>Check-in: <input class="form-control" type="date"></p>
+                </div>
+                <div class="col-lg-6">
+                    <p>Check-out: <input class="form-control" type="date"></p>
+                </div>
+            </div>
+                
+        </div>
 
+        <div class="col-lg-2">
+            <p class="">Type: <select class="form-control text">
+                <option value="STA">Standard</option>
+                <option value="DEL">Deluxe</option>
+            </select> </p>
+        </div>
+
+        <div class="col-lg-2">
+            <p>Beds: <input class="form-control" type="number"></p>
+            
+        </div>
+
+        <div class="col-lg-2 text-center mt-4">
+            <input class="btn btn-success " type="submit" value="Search">
+        </div>
+
+    </div>
+    <hr>
     {% if room_list %}
-    <div class="table-responsive mt-4">
-        <table class="table table-bordered table-hover text-center">
-            <thead>
-                <tr>
-                    <th>Room</th>
-                    <th>Type</th>
-                    <th>Beds</th>
-                    <th>Capacity</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for room in room_list %}
-                <tr>
-                    <td>{{ room.room_number }}</td>
-                    <td>{{ room.room_type }}</td>
-                    <td>{{ room.room_bed }}</td>
-                    <td>{{ room.room_capacity }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div> 
-    {% endif %} 
+        {% for room in room_list %}
+            <div class="pt-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <img src="{% static 'media/default.jpg'%}" width="100%" height="100%">
+                            </div>
+                            <div class="col-sm-7 d-flex flex-column">
+                                <div class="p-2">
+                                    <p>{{ room.room_desc}}</p>
+                                </div>
+                                <div class="mt-auto p-2">
+                                    <button class="btn btn-outline-secondary add-btn">Book</button>
+                                    <a class="btn btn-outline-success" href="{% url 'room' room.room_number %}">View</a>
+                                    <h3 style="display: inline-block; float:right;">₱999.00</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+    
 {% endblock %}
 
 
