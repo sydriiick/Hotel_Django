@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib import messages
-from .models import User, Room, Booking
+from .models import Room, Booking, Customer
 
 # Register your models here.
 admin.site.site_header = "Hotel Admin"
@@ -19,3 +19,9 @@ class BookingAdmin(admin.ModelAdmin):
     search_fields = ['booking_user','booking_room','check_in','check_out','booking_date']
 
 admin.site.register(Booking, BookingAdmin)
+
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ['customer_email','customer_fname','customer_lname','customer_phone','customer_date']
+    search_fields = ['customer_email','customer_fname','customer_lname','customer_phone','customer_date']
+
+admin.site.register(Customer, CustomerAdmin)

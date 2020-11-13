@@ -7,39 +7,43 @@
 
 
 {% block content %} 
-<hr>
-    <div class="row">
-        
-        <div class="col-lg-6">
-            <div class="row">
-                <div class="col-lg-6">
-                    <p>Check-in: <input class="form-control" type="date"></p>
+<div class="card">
+    <div class="card-head m-3">
+        <form action="" method="GET">
+            <div class="form-group col-lg-6">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <p>Check-in: <input class="form-control" type="datetime-local"></p>
+                    </div>
+                    <div class="col-lg-6">
+                        <p>Check-out: <input class="form-control" type="datetime-local"></p>
+                    </div>
                 </div>
-                <div class="col-lg-6">
-                    <p>Check-out: <input class="form-control" type="date"></p>
-                </div>
+                    
             </div>
-                
-        </div>
 
-        <div class="col-lg-2">
-            <p class="">Type: <select class="form-control text">
-                <option value="STA">Standard</option>
-                <option value="DEL">Deluxe</option>
-            </select> </p>
-        </div>
+            <div class="form-group col-lg-2">
+                <p class="">Type: 
+                    <select class="form-control text" name="room_type">
+                        <option>---------</option>
+                        <option value="STA">Standard</option>
+                        <option value="DEL">Deluxe</option>
+                    </select>    
+                </p>
+            </div>
 
-        <div class="col-lg-2">
-            <p>Beds: <input class="form-control" type="number"></p>
-            
-        </div>
-
-        <div class="col-lg-2 text-center mt-4">
-            <input class="btn btn-success " type="submit" value="Search">
-        </div>
-
+            <div class="col-lg-4">
+                <div style=" display:inline-block;">
+                    <p>Beds: <input class="form-control w-75" type="number" name="room_bed"></p>
+                </div>
+                <div  style="display:inline-block;">
+                    <button class="btn btn-success ml-auto" type="submit" value="Search" style="display: inline-block;">Search</button>
+                </div>    
+                    
+            </div>
+        </form>  
     </div>
-    <hr>
+</div>
     {% if room_list %}
         {% for room in room_list %}
             <div class="pt-2">
@@ -51,11 +55,10 @@
                             </div>
                             <div class="col-sm-7 d-flex flex-column">
                                 <div class="p-2">
-                                    <p>{{ room.room_desc}}</p>
+                                    <h4>{{ room.room_desc}}</h4>
                                 </div>
                                 <div class="mt-auto p-2">
-                                    <button class="btn btn-outline-secondary add-btn">Book</button>
-                                    <a class="btn btn-outline-success" href="{% url 'room' room.room_number %}">View</a>
+                                    <a class="btn btn-success" href="{% url 'room' room.room_number %}">View</a>
                                     <h3 style="display: inline-block; float:right;">₱999.00</h3>
                                 </div>
                             </div>

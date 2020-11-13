@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+   My booking
+{% endblock %}
+
+
+{% block content %} 
+<div class="pt-5">
+    <div class="card">
+        <div class="card-head bg-dark text-light">
+            <h4 class="m-3">My Bookings</h4>
+        </div>
+        <div class="card-body">
+            <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Booking room</th>
+                    <th scope="col">Check in</th>
+                    <th scope="col">Check out</th>
+                    <th scope="col">Booking date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    {% if book_list %}
+                        {% for book in book_list %}
+                            <tr>
+                                <th scope="row">{{book.booking_room}}</th>
+                                <td>{{book.check_in}}</td>
+                                <td>{{book.check_out}}</td>
+                                <td>{{book.booking_date}}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                  
+                </tbody>
+              </table>
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
+
+
+
+

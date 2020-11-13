@@ -31,7 +31,7 @@ class User(AbstractBaseUser):
     user_lname      = models.CharField(max_length=50, verbose_name='Last name')
     user_phone      = models.CharField(max_length=20, unique=True, verbose_name='Mobile number')
     date_joined     = models.DateTimeField(auto_now_add=True, verbose_name='Date joined')
-    last_login      = models.DateTimeField(auto_now=True, verbose_name='Date Joined')
+    last_login      = models.DateTimeField(auto_now=True, verbose_name='Last login')
     is_admin        = models.BooleanField(default=False, verbose_name='Admin')
     is_active       = models.BooleanField(default=True, verbose_name='Active')
     is_staff        = models.BooleanField(default=False, verbose_name='Staff status')

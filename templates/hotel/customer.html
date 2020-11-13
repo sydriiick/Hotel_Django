@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+  Customer
+{% endblock %}
+
+{% block content %} 
+<div class="pt-5">
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="row  m-3">
+                    <div class="col-sm-7">
+                        <img src="{% static 'media/default.jpg'%}" width="100%" height="100%">
+                    </div>
+                    <div class="col-sm-5">
+                        <h3 class="m-3">Room {{ room.room_number }}</h3>
+                        <ul class="list-unstyled mt-5">
+                            <li class="ml-5 mb-5">Type: {{ room.room_type}}</li>
+                            <li class="ml-5 mb-5">Number of beds: {{ room.room_bed}}</li>
+                            <li class="ml-5 mb-5">Capacity: {{ room.room_capacity}}</li>
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-head bg-dark text-light">
+                    <h4 class="ml-3">Your Booking details</h4>
+                </div>
+                <div class="card-body text-ilght m-3">
+                        <label for="">Check in:</label>
+                        <p>{{check_in}}</p>
+                        <label for="">Check out:</label>
+                        <p>{{check_out}}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex"></div>
+                        <label for="">Price:</label>
+                        <h4 class="float-right">₱999.00</h4>
+                        <form action="{% url 'payment' %}" method="POST"> {% csrf_token %}
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success float-right" value="Next: Final details">
+                                <input type="hidden" name="room" value="{{room.room_number}}">
+                                <input type="hidden" name="check_in"  value="{{check_in}}">
+                                <input type="hidden" name="check_out"  value="{{check_out}}">
+                                <input type="hidden" name="email"  value="{{email}}">
+                            </div>  
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9 pt-5">
+            <div class="card">
+                <div class="card-head bg-dark text-light">
+                    <h4 class="ml-3">Customer details</h4>
+                </div>
+                <div class="card-body m-2">
+                    <div class="col-sm-6">
+                            
+                        
+            
+
+                                <div class="form-group">
+                                    <label for="customer_fname">First name: </label>
+                                    <input type="text" name='customer_fname' class="form-control" id="customer_fname" value="{{user.user_fname}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customer_lname">Last name: </label>
+                                    <input type="text" name='customer_lname' class="form-control" id="customer_lname" value="{{user.user_lname}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customert_email">Email: </label>
+                                    <input type="text" name='customer_email' class="form-control" id="customer_email" value="{{user.user_email}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="customer_phone">Mobile number: </label>
+                                    <input type="text" name='customer_phone' class="form-control" id="customer_phone"  value="{{user.user_phone}}" required>
+                                </div>
+
+                                {% if success_message %}
+                                    <h6 class="small text-success text-center">{{success_message}}</h6>
+                                {% endif %}
+
+                                
+                            </form>
+                    </div>
+                    
+                        
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+        
+    
+</div>
+
+
+{% endblock %}
+
+
+
+

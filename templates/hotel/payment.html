@@ -1,1 +1,156 @@
-payment page
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title%}
+  Payment
+{% endblock %}
+
+{% block content %} 
+<div class="pt-5">
+    <div class="row">
+        <div class="col-sm-9">
+            <div class="card">
+                <div class="row  m-3">
+                    <div class="col-sm-7">
+                        <img src="{% static 'media/default.jpg'%}" width="100%" height="100%">
+                    </div>
+                    <div class="col-sm-5">
+                        <h3 class="m-3">Room {{ room.room_number }}</h3>
+                        <ul class="list-unstyled mt-5">
+                            <li class="ml-5 mb-5">Type: {{ room.room_type}}</li>
+                            <li class="ml-5 mb-5">Number of beds: {{ room.room_bed}}</li>
+                            <li class="ml-5 mb-5">Capacity: {{ room.room_capacity}}</li>
+                        </ul>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="card">
+                <div class="card-head bg-dark text-light">
+                    <h4 class="ml-3">Your Booking details</h4>
+                </div>
+                <div class="card-body text-ilght m-3">
+                        <label for="">Check in:</label>
+                        <p>{{check_in}}</p>
+                        <label for="">Check out:</label>
+                        <p>{{check_out}}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="d-flex"></div>
+                        <label for="">Price:</label>
+                        <h4 class="float-right">₱999.00</h4>
+                        <form action="{% url 'book' %}" method="POST"> {% csrf_token %}
+                            <div class="form-group">
+                                <input type="submit" class="btn btn-success float-right" value="Compete Booking">
+                                <input type="hidden" name="room" value="{{room.room_number}}">
+                                <input type="hidden" name="email" value="{{user}}">
+                                <input type="hidden" name="check_in"  value="{{check_in}}">
+                                <input type="hidden" name="check_out"  value="{{check_out}}">
+                            </div>  
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-9 pt-5">
+            <div class="card">
+                <div class="card-head bg-dark text-light">
+                    <h4 class="ml-3">Customer details</h4>
+                </div>
+                <div class="card-body m-2">
+                    <div class="col-sm-6">
+                            
+                                 
+                                <div class="form-group">
+                                    <label for="payment_fname">Cardholder's name: </label>
+                                    <input type="text" name='payment_fname' class="form-control" id="payment_fname" value="{{fname}} {{lname}}" required>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="payment_lname">Card type: </label>
+                                            <select name="card_type" id="card_type" class="form-control">
+                                                <option>--Select--</option>
+                                                <option>Master Card</option>
+                                                <option>Visa</option>
+                                                <option>American Express</option>
+                                              </select>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="card_number">Card number: </label>
+                                            <input type="text" name='card_number' class="form-control" id="card_number" required>
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                                <div class="form-group row">
+                                    <div class="col-sm-4">
+                                        <label for="expiry_date">Expiry date: </label>
+                                        <select name="expiry_date" id="expiry_date" class="form-control">
+                                            <option>01 - Jan</option>
+                                            <option>02 - Feb</option>
+                                            <option>03 - Mar</option>
+                                            <option>04 - Apr</option>
+                                            <option>05 - May</option>
+                                            <option>06 - Jun</option>
+                                            <option>07 - Jul</option>
+                                            <option>08 - Aug</option>
+                                            <option>09 - Sep</option>
+                                            <option>10 - Oct</option>
+                                            <option>11 - Nob</option>
+                                            <option>12 - Dec</option>
+                                            </select>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="expiry_date">/</label>
+                                        <select name="expiry_date" id="expiry_date" class="form-control">
+                                            <option>2020</option>
+                                            <option>2021</option>
+                                            <option>2022</option>
+                                            <option>2023</option>
+                                            <option>2024</option>
+                                            <option>2025</option>
+                                            <option>2026</option>
+                                            <option>2027</option>
+                                            <option>2028</option>
+                                            <option>2029</option>
+                                            <option>2030</option>
+                                            </select>
+                                    </div>
+                                </div>
+                                    
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label for="code">CVC-code: </label>
+                                            <input type="number"  name="code" class="form-control" id="code"  required>
+                                        </div>
+                                    </div>
+                                </div>                                
+                            </form>
+                    </div>
+                </div>
+                
+            </div>
+            
+        </div>
+        <div class="col-sm-3"></div>
+    </div>
+        
+    
+</div>
+
+
+{% endblock %}
+
+
+
+

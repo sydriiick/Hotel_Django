@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate
 from account.models import User
+from .models import Booking, Customer
+from .availability import check_availability
 
 
 class Register(UserCreationForm):
@@ -49,3 +51,16 @@ class AccountUpdate(forms.ModelForm):
             except User.DoesNotExist:
                 return user_phone
             raise forms.ValidationError('Mobile number "%s" is aready in use.' % user_phone)
+        
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['customer_email','customer_fname','customer_lname','customer_phone']
+
+    def clean(self):
+        if self.is_valid():
+            customer_email = self.cleaned_data['customer_email']
+            customer_fname = self.cleaned_data['customer_fname']
+            customer_lname = self.cleaned_data['customer_email']
+            customer_phone = self.cleaned_data['customer_phone']
+                        
