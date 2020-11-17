@@ -26,6 +26,8 @@ class Room(models.Model):
     room_bed        = models.IntegerField(verbose_name='Number of Bed(s)')
     room_capacity   = models.IntegerField(verbose_name='Capacity')
     room_desc       = models.TextField(max_length=400, verbose_name='Description')
+    room_price      = models.FloatField(null=True)
+    room_image      = models.ImageField(null=True, blank=True)
 
     def __str__(self):
         return str(self.room_number)
@@ -35,8 +37,19 @@ class Booking(models.Model):
     booking_room    = models.ForeignKey(Room, on_delete = models.CASCADE, verbose_name='Room Number')
     check_in        = models.DateTimeField(blank=True, null=True,verbose_name='Check In')
     check_out       = models.DateTimeField(blank=True, null=True,verbose_name='Check Out')
-    status          = models.BooleanField(default=False, null=True, blank=False, verbose_name="Status")
     booking_date    = models.DateTimeField(auto_now_add=True, verbose_name='Booking Date')
     
+    def __str__(self):
+        return self.booking_user
+
+class Comment(models.Model):
+    user = models.ForeignKey(Booking, on_delete=models.CASCADE, verbose_name='Customer email')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, verbose_name='Room number')
+    name = models.CharField(max_length=20, null=True)
+    comment = models.TextField(max_length=250, blank=True, verbose_name='Comment')
+    rate = models.IntegerField(default=1, verbose_name='Rate')
+    status = models.BooleanField(default=False, verbose_name='Status')
+    created_on = models.DateTimeField(auto_now_add=True, verbose_name='Created on')
+
     def __str__(self):
         return str(self.id)

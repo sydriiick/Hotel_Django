@@ -7,68 +7,98 @@
 
 
 {% block content %} 
-<div class="card">
+{% if messages %}
+    {% for message in messages %}
+        <script>
+            swal({
+            title: "Success!",
+            text: "The room is reserved for you.",
+            icon: "success",
+            button: "Close",
+            });
+        </script> 
+    {% endfor %}
+{% endif %}
+
+
+<div class="card mt-3">
     <div class="card-head m-3">
         <form action="" method="GET">
-            <div class="form-group col-lg-6">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <p>Check-in: <input class="form-control" type="datetime-local"></p>
-                    </div>
-                    <div class="col-lg-6">
-                        <p>Check-out: <input class="form-control" type="datetime-local"></p>
-                    </div>
+            <div class="d-flex justify-content-around">
+                <div class="col-sm-3 form-group">
+                    <label for="">Check in:
+                        <div class="input-group date" id="check-in" data-target-input="nearest">
+                            <input type="text" name="check_in" class="form-control datetimepicker-input" data-target="#check-in" required>
+                            <div class="input-group-append" data-target="#check-in" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </label>
                 </div>
-                    
-            </div>
-
-            <div class="form-group col-lg-2">
-                <p class="">Type: 
-                    <select class="form-control text" name="room_type">
-                        <option>---------</option>
-                        <option value="STA">Standard</option>
-                        <option value="DEL">Deluxe</option>
-                    </select>    
-                </p>
-            </div>
-
-            <div class="col-lg-4">
-                <div style=" display:inline-block;">
-                    <p>Beds: <input class="form-control w-75" type="number" name="room_bed"></p>
+                <div class="col-sm-3 form-group">
+                    <label for="">Check out:
+                        <div class="input-group date" id="check-out" data-target-input="nearest">
+                            <input type="text" name="check_out" class="form-control datetimepicker-input" data-target="#check-out" required>
+                            <div class="input-group-append" data-target="#check-out" data-toggle="datetimepicker">
+                                <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                            </div>
+                        </div>
+                    </label>
                 </div>
-                <div  style="display:inline-block;">
-                    <button class="btn btn-success ml-auto" type="submit" value="Search" style="display: inline-block;">Search</button>
-                </div>    
+                <div class="col-sm-2 form-group">
+                    <label class="">Type: 
+                        <select class="form-control text" name="room_type">
+                            <option>---------</option>
+                            <option value="STA">Standard</option>
+                            <option value="DEL">Deluxe</option>
+                        </select>
+                    </label>
+                </div>
+                <div class="col-sm-2 form-group ">
+                    <label>Beds:
+                        <input class="form-control w-75" type="number" name="room_bed">
+                    </label>
+                </div> 
+                <div class="col-sm-2">
+                    <input class="btn btn-success m-4" type="submit" value="Search">
+                </div> 
                     
             </div>
         </form>  
     </div>
 </div>
-    {% if room_list %}
-        {% for room in room_list %}
-            <div class="pt-2">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-sm-5">
-                                <img src="{% static 'media/default.jpg'%}" width="100%" height="100%">
+
+{% if book_list %}
+    {% for book in book_list %}
+        {{book.room_number}} <br>
+    {% endfor %}
+{% endif %}
+
+{% if room_list %}
+    {% for room in room_list %}
+        <div class="pt-2">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-5">
+                            <img src="{{room.room_image.url}}" width="100%" height="100%">
+                        </div>
+                        <div class="col-sm-7 d-flex flex-column">
+                            <div class="p-2">
+                                <p>{{ room.room_desc }}</p>
                             </div>
-                            <div class="col-sm-7 d-flex flex-column">
-                                <div class="p-2">
-                                    <h4>{{ room.room_desc}}</h4>
-                                </div>
-                                <div class="mt-auto p-2">
-                                    <a class="btn btn-success" href="{% url 'room' room.room_number %}">View</a>
-                                    <h3 style="display: inline-block; float:right;">₱999.00</h3>
-                                </div>
+                            <div class="mt-auto p-2">
+                                <a class="btn btn-outline-success" href="{% url 'room' room.room_number %}">View</a>
+                                <h3 style="display: inline-block; float:right;">₱{{room.room_price}}</h3>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        {% endfor %}
-    {% endif %}
-    
+        </div>
+    {% endfor %}
+{% endif %}
+      
 {% endblock %}
 
 

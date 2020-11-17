@@ -4,23 +4,28 @@ from django.contrib import messages
 from django.views.generic import FormView
 from .forms import Register, UserAuthForm, AccountUpdate, CustomerForm
 from account.models import User
-from .models import Room, Booking, Customer
+from .models import Room, Booking, Customer, Comment
 from .availability import check_availability
 from datetime import datetime
-from .filters import OrderFilter
+from .filters import RoomFilter, BookingFilter
+from django.db.models import Q
 
 # Create your views here.
 
 def home(request):
     context = {}
-    room_list = Room.objects.all()
 
-    myfilter = OrderFilter(request.GET, queryset=room_list)
-    room_list = myfilter.qs
-
+    if request.GET:
+        check_in =  datetime.strptime(request.GET.get('check_in'), "%m/%d/%Y %I:%M %p")
+        check_out = datetime.strptime(request.GET.get('check_out'), "%m/%d/%Y %I:%M %p")
+        room_list = Room.objects.all().filter(~Q(booking__check_in__gte = check_in),~Q(booking__check_out__gte = check_out))
+    else:
+        room_list = Room.objects.all()
+    roomfilter = RoomFilter(request.GET, queryset=room_list)
+    room_list = roomfilter.qs
     context = {
         'room_list': room_list,
-        'myfilter': myfilter,
+        'roomfilter': roomfilter,
         }
 
     return render(request, 'home.html', context)
@@ -31,6 +36,7 @@ def booking(request):
         user = request.user
         
     book_list = Booking.objects.filter(booking_user=user)
+    
     context['book_list'] = book_list
     return render(request, 'user/booking.html', context)
 
@@ -116,9 +122,39 @@ def account_view(request):
 
 def room(request, room_number):
     context = {}
-    room = get_object_or_404(Room, room_number=room_number)
-    context['room'] = room
+    room = get_object_or_404(Room, room_number = room_number)
+    comment_list = Comment.objects.filter(room = room , status=True)
 
+    if request.user.is_authenticated:
+        user = request.user
+        book_list = Booking.objects.filter(booking_room = room , booking_user = user)
+        if book_list:
+            book_user  =  Booking.objects.filter(booking_room = room , booking_user = user)[0]
+        context = {
+            'room': room,
+            'comment_list': comment_list,
+            'book_list': book_list,
+        }
+
+    else:
+        context = {
+            'room': room,
+            'comment_list': comment_list,
+        }
+    
+        
+    if request.POST:
+        comment = request.POST.get('comment')
+        rate = request.POST.get('rate')
+        name = user.user_fname + ' ' + user.user_lname[:1] + '.'
+        comments = Comment.objects.create(
+            user = book_user,
+            room = room,
+            name = name,
+            comment = comment,
+            rate = rate,
+            )
+        comments.save()
     return render(request, 'hotel/room.html', context)
 
 
@@ -132,6 +168,8 @@ def customer(request):
     check_in = request.POST.get('check_in')
     check_out = request.POST.get('check_out')
     
+    nights = datetime.strptime(check_out, "%m/%d/%Y %I:%M %p") - datetime.strptime(check_in, "%m/%d/%Y %I:%M %p")
+
     room_list = Room.objects.filter(room_number=request.POST.get('room'))
     
     if check_in[:-9] >= check_out[:-9]:
@@ -150,10 +188,11 @@ def customer(request):
                 'room': room,
                 'check_in': check_in,
                 'check_out': check_out,
+                'nights': int(nights.total_seconds() / 86400)+1,
                 }
             return render(request, 'hotel/customer.html', context)
         else:
-            messages.error(request, 'This date is already booked. Try another one.')
+            messages.error(request, 'This date is already reserved. Try another one.')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def payment(request):
@@ -173,6 +212,8 @@ def payment(request):
     fname =  request.POST.get('customer_fname')
     lname =  request.POST.get('customer_lname')
 
+    nights = datetime.strptime(check_out, "%m/%d/%Y %I:%M %p") - datetime.strptime(check_in, "%m/%d/%Y %I:%M %p")
+
     context = {
         'user': email,
         'room': Room.objects.get(room_number=room),
@@ -180,6 +221,7 @@ def payment(request):
         'check_out': check_out,
         'fname': fname,
         'lname': lname,
+        'nights': int(nights.total_seconds() / 86400)+1,
         }
     
     return render(request, 'hotel/payment.html', context)
@@ -199,5 +241,5 @@ def book(request):
         check_out = datetime.strptime(check_out, "%m/%d/%Y %I:%M %p"),
         )
     book.save()
-
+    messages.error(request, 'Successfully Booked!')
     return redirect("home")
